@@ -19,20 +19,16 @@ export default function HomeScreen({ navigation }) {
       </View>
 
       {/* Welcome Words and paragraph */}
-      <View>
-        <Text>
-          {" "}
-          Welcome To Us {"\n"} <Text> Wassup </Text>{" "}
-        </Text>
+      <View style={styles.content}>
+        <Text>Welcome To Workman {"\n"}</Text>
       </View>
 
-      {/* path to login and sign up pages */}
-      {/* 
-      <View style={styles.path}>
-        <TouchableOpacity>
+      {/* Button */}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button}>
           <Text> Hello </Text>
         </TouchableOpacity>
-      </View>*/}
+      </View>
     </View>
   );
 }
@@ -40,13 +36,34 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    paddingVertical: 40,
+    justifyContent: "space-between", // Arrange items vertically with space between
     alignItems: "center",
+    margin: 15,
   },
 
   header: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+  },
+
+  content: {
+    flex: 1, // Take up remaining available space
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  buttonContainer: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20, // Add margin at the bottom
+  },
+
+  button: {
+    borderWidth: 2,
+    alignItems: "center",
+    padding: 10,
   },
 });
