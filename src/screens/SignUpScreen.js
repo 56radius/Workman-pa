@@ -8,7 +8,7 @@ import {
   TextInput,
 } from "react-native";
 
-export default function LoginScreen({ navigation }) {
+export default function SignUpScreen({ navigation }) {
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -37,6 +37,32 @@ export default function LoginScreen({ navigation }) {
           <TextInput placeholder="Email" />
         </View>
 
+        {/* Name */}
+        <View
+          style={{
+            marginBottom: 15,
+            borderColor: "gray",
+            borderWidth: 2,
+            borderRadius: 20,
+            padding: 10,
+          }}
+        >
+          <TextInput placeholder="First Name" />
+        </View>
+
+        {/* Age */}
+        <View
+          style={{
+            marginBottom: 15,
+            borderColor: "gray",
+            borderWidth: 2,
+            borderRadius: 20,
+            padding: 10,
+          }}
+        >
+          <TextInput placeholder="Age" />
+        </View>
+
         {/* password */}
         <View
           style={{
@@ -50,10 +76,17 @@ export default function LoginScreen({ navigation }) {
           <TextInput placeholder="password" />
         </View>
 
-        <View style={{ padding: 8 }}>
-          <TouchableOpacity onPress={() => navigation.navigate("Forgot")}>
-            <Text style={{ color: "blue" }}> Forgot password? </Text>
-          </TouchableOpacity>
+        {/* confirm password */}
+        <View
+          style={{
+            marginBottom: 15,
+            borderColor: "gray",
+            borderWidth: 2,
+            borderRadius: 20,
+            padding: 10,
+          }}
+        >
+          <TextInput placeholder="Confirm password" />
         </View>
 
         {/* Submit */}
@@ -75,41 +108,7 @@ export default function LoginScreen({ navigation }) {
               borderColor: "gray",
             }}
           >
-            <Text style={{ color: "#fff", fontWeight: "bold" }}> LOGIN </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* OR text */}
-        <View
-          style={{
-            padding: 10,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text> Or </Text>
-        </View>
-
-        {/* Sign Up button */}
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 8,
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => navigation.navigate("SignUp")}
-            style={{
-              borderWidth: 3,
-              width: "60%",
-              alignItems: "center",
-              paddingVertical: 8,
-              borderRadius: 10,
-              borderColor: "#fff",
-            }}
-          >
-            <Text style={{ color: "gray", fontWeight: "bold" }}> SIGN UP </Text>
+            <Text style={{ color: "#fff", fontWeight: "bold" }}> SUBMIT </Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -20,13 +20,32 @@ export default function HomeScreen({ navigation }) {
 
       {/* Welcome Words and paragraph */}
       <View style={styles.content}>
-        <Text>Welcome To Workman {"\n"}</Text>
+        <Text style={{ fontSize: 30 }}>Welcome To Workman {"\n"}</Text>
+        <Text
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          We are ready to assist you {"\n"}
+          <Text style={{ textAlign: "center" }}> with your need </Text>
+        </Text>
       </View>
 
       {/* Button */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
-          <Text> Hello </Text>
+      <View style={{ width: "75%", backgroundColor: "gray", borderRadius: 15 }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Login")}
+          style={{
+            borderWidth: 2,
+            alignItems: "center",
+            padding: 10,
+            borderColor: "gray",
+            borderRadius: 15,
+          }}
+        >
+          <Text style={{ color: "#fff" }}> Click To Continue </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -52,18 +71,5 @@ const styles = StyleSheet.create({
     flex: 1, // Take up remaining available space
     justifyContent: "center",
     alignItems: "center",
-  },
-
-  buttonContainer: {
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 20, // Add margin at the bottom
-  },
-
-  button: {
-    borderWidth: 2,
-    alignItems: "center",
-    padding: 10,
   },
 });
