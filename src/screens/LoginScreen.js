@@ -50,6 +50,7 @@ export default function LoginScreen({ navigation }) {
           <TextInput placeholder="password" />
         </View>
 
+        {/* Forgot password */}
         <View style={{ padding: 8 }}>
           <TouchableOpacity onPress={() => navigation.navigate("Forgot")}>
             <Text style={{ color: "blue" }}> Forgot password? </Text>
@@ -65,6 +66,7 @@ export default function LoginScreen({ navigation }) {
           }}
         >
           <TouchableOpacity
+            onPress={() => navigation.navigate("Dashboard")}
             style={{
               borderWidth: 2,
               width: "60%",
