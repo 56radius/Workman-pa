@@ -45,7 +45,7 @@ export default function HomeScreen({ navigation }) {
             borderRadius: 15,
           }}
         >
-          <Text style={{ color: "#fff" }}> Click To Continue </Text>
+          <Text style={{ color: "#fff" }}> Continue </Text>
         </TouchableOpacity>
       </View>
     </View>
