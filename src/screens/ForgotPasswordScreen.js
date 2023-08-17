@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from "react-native";
 
 //firebase auth
@@ -72,6 +73,7 @@ export default function ForgotPasswordScreen({ navigation }) {
         }}
       >
         <TouchableOpacity
+          onPress={handleSubmit}
           style={{
             width: "60%",
             borderWidth: 2,
