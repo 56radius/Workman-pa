@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Touchable } from "react-native";
 import {
   View,
@@ -9,7 +9,25 @@ import {
   TextInput,
 } from "react-native";
 
+//firebase auth
+import { sendPasswordResetEmail } from "firebase/auth";
+import { authConfig } from "../backend/firebase.config";
+
 export default function ForgotPasswordScreen({ navigation }) {
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = () => {
+    sendPasswordResetEmail(authConfig, email)
+      .then(() => {
+        Alert.alert("Success", "link sent!");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+        Alert.alert("Error", errorMessage);
+      });
+  };
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -38,7 +56,10 @@ export default function ForgotPasswordScreen({ navigation }) {
           borderRadius: 10,
         }}
       >
-        <TextInput placeholder="Your Email Address" />
+        <TextInput
+          onChangeText={(text) => setEmail(text)}
+          placeholder="Your Email Address"
+        />
       </View>
 
       {/* Submit */}

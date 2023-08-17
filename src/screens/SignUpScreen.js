@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from "react-native";
 
 //firebase
@@ -25,6 +26,7 @@ export default function SignUpScreen({ navigation }) {
       })
       .catch((err) => {
         console.log("Error ", err.message);
+        Alert.alert("Failure", "password should be long");
       });
   };
   return (

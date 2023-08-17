@@ -61,7 +61,10 @@ export default function LoginScreen({ navigation }) {
             padding: 10,
           }}
         >
-          <TextInput placeholder="Email" />
+          <TextInput
+            onChangeText={(text) => setEmail(text)}
+            placeholder="Email"
+          />
         </View>
 
         {/* password */}
@@ -74,7 +77,11 @@ export default function LoginScreen({ navigation }) {
             padding: 10,
           }}
         >
-          <TextInput placeholder="password" />
+          <TextInput
+            onChangeText={(text) => setPassword(text)}
+            secureTextEntry
+            placeholder="password"
+          />
         </View>
 
         {/* Forgot password */}
