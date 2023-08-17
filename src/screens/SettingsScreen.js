@@ -1,10 +1,21 @@
 import * as React from "react";
-import { View, Image, StyleSheet, Text } from "react-native";
+import { View, Image, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 export default function SettingsScreen() {
   return (
     <View style={styles.container}>
-      <Text> Hello </Text>
+      <View style={{ width: "40%", justifyContent: "center" }}>
+        <TouchableOpacity
+          style={{
+            borderWidth: 2,
+            alignItems: "center",
+            paddingVertical: 9,
+            borderRadius: 6,
+          }}
+        >
+          <Text> Log out </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

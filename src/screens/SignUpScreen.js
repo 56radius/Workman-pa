@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,7 +8,25 @@ import {
   TextInput,
 } from "react-native";
 
+//firebase
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { authConfig } from "../backend/firebase.config";
+
 export default function SignUpScreen({ navigation }) {
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = () => {
+    console.log("Registering ", email, password);
+    createUserWithEmailAndPassword(authConfig, email, password)
+      .then((result) => {
+        console.log("user created", result.user);
+        Alert.alert("Success", "Sign up successful!");
+      })
+      .catch((err) => {
+        console.log("Error ", err.message);
+      });
+  };
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -34,7 +52,10 @@ export default function SignUpScreen({ navigation }) {
             padding: 10,
           }}
         >
-          <TextInput placeholder="Email" />
+          <TextInput
+            onChangeText={(text) => setEmail(text)}
+            placeholder="Email"
+          />
         </View>
 
         {/* Name */}
@@ -73,7 +94,11 @@ export default function SignUpScreen({ navigation }) {
             padding: 10,
           }}
         >
-          <TextInput placeholder="password" />
+          <TextInput
+            onChangeText={(text) => setPassword(text)}
+            secureTextEntry
+            placeholder="password"
+          />
         </View>
 
         {/* confirm password */}
@@ -86,7 +111,7 @@ export default function SignUpScreen({ navigation }) {
             padding: 10,
           }}
         >
-          <TextInput placeholder="Confirm password" />
+          <TextInput secureTextEntry placeholder="Confirm password" />
         </View>
 
         {/* Submit */}
@@ -98,6 +123,7 @@ export default function SignUpScreen({ navigation }) {
           }}
         >
           <TouchableOpacity
+            onPress={handleSubmit}
             style={{
               borderWidth: 2,
               width: "60%",

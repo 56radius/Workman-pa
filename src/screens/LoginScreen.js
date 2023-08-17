@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,9 +6,36 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from "react-native";
 
+//firebase
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { authConfig } from "../backend/firebase.config";
+
 export default function LoginScreen({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    signInWithEmailAndPassword(authConfig, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log("Logging user ", user.uid);
+        // Show success alert
+        Alert.alert("Success", "Login successful!");
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("Logging err ", error);
+        // Show error alert
+        Alert.alert("Error", errorMessage);
+      });
+  };
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -66,7 +93,7 @@ export default function LoginScreen({ navigation }) {
           }}
         >
           <TouchableOpacity
-            onPress={() => navigation.navigate("Dashboard")}
+            onPress={handleLogin}
             style={{
               borderWidth: 2,
               width: "60%",

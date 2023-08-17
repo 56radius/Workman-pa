@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import * as React from "react";
 
 //stack navigation imports
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -13,48 +13,76 @@ import SignUpScreen from "./src/screens/SignUpScreen";
 import ForgotPasswordScreen from "./src/screens/ForgotPasswordScreen";
 import DashboardScreen from "./src/screens/DashboardScreen";
 
+//firebase auth
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+const auth = getAuth();
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const [currUser, setCurrUser] = useState();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      // console.log("Loggedin user status ", user);
+      setCurrUser(user);
+    });
+  }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* Home Screen navigation */}
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ headerShown: false }}
-        />
+        {currUser ? (
+          <>
+            {/* Dashboard */}
+            <Stack.Screen
+              name="Dashboard"
+              component={DashboardScreen}
+              options={{ title: "Dashboard", headerShown: false }}
+            />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{
+                headerShown: false,
+                title: "HOME/LOGIN",
+                headerTitleStyle: {
+                  fontWeight: "bold",
+                },
+              }}
+            />
 
-        {/* Forgot Password Screen navigation */}
-        <Stack.Screen
-          name="Forgot"
-          component={ForgotPasswordScreen}
-          options={{}}
-        />
+            {/* Login */}
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{
+                headerTransparent: true,
+                headerShown: false,
+                title: "Login",
+              }}
+            />
 
-        {/* Login Screen navigation */}
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{
-            title: "Login",
-          }}
-        />
+            {/* ForgotPassword */}
+            <Stack.Screen
+              name="ForgotPassword"
+              component={ForgotPasswordScreen}
+              options={{
+                headerTransparent: true,
+                title: "Forgot Password",
+              }}
+            />
 
-        {/* Sign up screen navigation */}
-        <Stack.Screen
-          name="SignUp"
-          component={SignUpScreen}
-          options={{ title: "Forgot Password" }}
-        />
-
-        {/* Dashboard Screen */}
-        <Stack.Screen
-          name="Dashboard"
-          component={DashboardScreen}
-          options={{ title: "Dashboard", headerShown: false }}
-        />
+            {/* Sign up */}
+            <Stack.Screen
+              name="SignUp"
+              component={SignUpScreen}
+              options={{ title: "Sign Up", headerShown: false }}
+            />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
