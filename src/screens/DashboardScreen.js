@@ -19,8 +19,8 @@ function Dashboard({ navigation }) {
         name="DashboardHomeScreen"
         component={DashboardHomeScreen}
         options={{
-          title: "Task",
-          headerShown: false,
+          title: "Tasks",
+          headerTransparent: true,
           tabBarIcon: () => (
             <FontAwesome5 name="tasks" size={24} color="black" />
           ),
