@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,72 +6,62 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
-
-//expo vector icons
 import { AntDesign } from "@expo/vector-icons";
+import RBSheet from "react-native-raw-bottom-sheet";
 
-export default function DashboardHomeScreen() {
+export default function DashboardHomeScreen({ navigation }) {
+  const tasks = [
+    { id: 1, title: "Task 1", description: "Description for Task 1" },
+    // ... other tasks
+  ];
+
+  const [selectedTask, setSelectedTask] = useState(null);
+  const bottomSheetRef = React.createRef();
+
+  const openTaskDetails = (task) => {
+    setSelectedTask(task);
+    bottomSheetRef.current.open();
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
-        {/* Header */}
-        <View
-          style={{
-            alignSelf: "flex-start",
-            paddingHorizontal: 24,
-            paddingTop: 20,
-          }}
-        >
-          <Text style={{ color: "gray", fontWeight: "bold" }}> See Tasks </Text>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>See Tasks</Text>
         </View>
-
-        {/* Details contents */}
-        <View style={styles.Details}>
-          {/* Task 1 */}
-          <TouchableOpacity style={[styles.Button, styles.buttonMargin]}>
-            {/* Title and arrow icon */}
-            <View style={styles.DetailsText}>
-              <Text> Task 1 </Text>
-
-              {/* Right arrow icon */}
-              <AntDesign name="arrowright" size={20} color="black" />
-            </View>
-          </TouchableOpacity>
-
-          {/* Task 2 */}
-          <TouchableOpacity style={[styles.Button, styles.buttonMargin]}>
-            {/* Title and arrow icon */}
-            <View style={styles.DetailsText}>
-              <Text> Task 2 </Text>
-
-              {/* Right arrow icon */}
-              <AntDesign name="arrowright" size={20} color="gray" />
-            </View>
-          </TouchableOpacity>
-
-          {/* Task 3 */}
-          <TouchableOpacity style={[styles.Button, styles.buttonMargin]}>
-            {/* Title and arrow icon */}
-            <View style={styles.DetailsText}>
-              <Text> Task 3 </Text>
-
-              {/* Right arrow icon */}
-              <AntDesign name="arrowright" size={20} color="black" />
-            </View>
-          </TouchableOpacity>
-
-          {/* Task 4 */}
-          <TouchableOpacity style={[styles.Button, styles.buttonMargin]}>
-            {/* Title and arrow icon */}
-            <View style={styles.DetailsText}>
-              <Text> Task 4 </Text>
-
-              {/* Right arrow icon */}
-              <AntDesign name="arrowright" size={20} color="gray" />
-            </View>
-          </TouchableOpacity>
+        <View style={styles.detailsContainer}>
+          {tasks.map((task) => (
+            <TouchableOpacity
+              key={task.id}
+              style={[styles.taskButton, styles.buttonMargin]}
+              onPress={() => openTaskDetails(task)}
+            >
+              <View style={styles.taskDetails}>
+                <Text style={styles.taskTitle}>{task.title}</Text>
+                <AntDesign name="arrowright" size={20} color="black" />
+              </View>
+            </TouchableOpacity>
+          ))}
         </View>
       </View>
+      <RBSheet
+        ref={bottomSheetRef}
+        height={300}
+        duration={250}
+        customStyles={{
+          container: styles.bottomSheetContainer,
+        }}
+      >
+        {selectedTask && (
+          <View style={styles.bottomSheetContent}>
+            <Text style={styles.bottomSheetTitle}>{selectedTask.title}</Text>
+            <Text>{selectedTask.description}</Text>
+            <TouchableOpacity onPress={() => bottomSheetRef.current.close()}>
+              <Text style={styles.closeButton}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </RBSheet>
     </ScrollView>
   );
 }
@@ -83,25 +73,51 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 50,
   },
-
-  Details: {
+  header: {
+    alignSelf: "flex-start",
+    paddingHorizontal: 24,
+    paddingTop: 20,
+  },
+  headerText: {
+    color: "gray",
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  detailsContainer: {
     paddingVertical: 25,
     width: "80%",
   },
-
-  Button: {
+  taskButton: {
     borderWidth: 2,
     paddingVertical: 10,
     borderRadius: 8,
   },
-
   buttonMargin: {
     marginVertical: 10,
   },
-
-  DetailsText: {
+  taskDetails: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     margin: 10,
+  },
+  taskTitle: {
+    fontWeight: "bold",
+  },
+  bottomSheetContainer: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  bottomSheetContent: {
+    padding: 20,
+  },
+  bottomSheetTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  closeButton: {
+    color: "blue",
+    marginTop: 10,
   },
 });
