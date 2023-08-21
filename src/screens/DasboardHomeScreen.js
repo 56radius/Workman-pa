@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import {
   View,
   Text,
@@ -10,20 +9,15 @@ import {
   RefreshControl,
   TextInput,
 } from "react-native";
-
-//expo vector icons
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-
-//bottom sheet
 import RBSheet from "react-native-raw-bottom-sheet";
-
-//firebase authentication
 import {
   getFirestore,
   collection,
   getDocs,
   doc,
   deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
 import app from "../backend/firebase.config";
 const dbRef = getFirestore(app);
@@ -32,27 +26,24 @@ export default function DashboardHomeScreen({ navigation }) {
   const [dataSnapshot, setDataSnapshot] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
-  //bottom sheet
   const tasks = [
     { id: 1, title: "Task 1", description: "Description for Task 1" },
+    // Add more tasks here
   ];
 
   const [selectedTask, setSelectedTask] = useState(null);
   const bottomSheetRef = React.createRef();
 
-  //bottom sheets
   const openTaskDetails = (task) => {
     setSelectedTask(task);
     bottomSheetRef.current.open();
   };
 
-  //edit bottom sheets
   const openEditBottomSheet = (task) => {
     setSelectedTask(task);
     bottomSheetRef.current.open();
   };
 
-  //handleDelete function
   const handleDelete = async (docId) => {
     try {
       await deleteDoc(doc(collection(dbRef, "Tasks"), docId));
@@ -64,10 +55,17 @@ export default function DashboardHomeScreen({ navigation }) {
     }
   };
 
-  //handleUpdate function
-  const handleUpdate = async (docId) => {};
+  const handleUpdate = async () => {
+    try {
+      // Perform the necessary update actions here
+      Alert.alert("Success", "Task successfully updated");
+      bottomSheetRef.current.close();
+    } catch (error) {
+      console.log("Error updating document:", error);
+      Alert.alert("Failure", "Task could not be updated");
+    }
+  };
 
-  //useEfect for retrieval of tasks for the right arrow icon
   useEffect(() => {
     async function getTasks() {
       try {
@@ -91,11 +89,9 @@ export default function DashboardHomeScreen({ navigation }) {
     getTasks();
   }, []);
 
-  //for the refresh control api that was imported
   const onRefresh = async () => {
     setRefreshing(true);
 
-    //try and catch to retrieve from the firestore database
     try {
       const tasks = [];
       const querySnapshot = await getDocs(collection(dbRef, "Tasks"));
@@ -167,7 +163,6 @@ export default function DashboardHomeScreen({ navigation }) {
         ))}
       </View>
 
-      {/* Button sheet for the edit icon */}
       <RBSheet
         ref={bottomSheetRef}
         height={300}
@@ -179,25 +174,25 @@ export default function DashboardHomeScreen({ navigation }) {
         {selectedTask && (
           <View style={styles.bottomSheetContent}>
             <Text style={styles.bottomSheetTitle}>{selectedTask.title}</Text>
-            {/* Task title entry in the bottom sheet */}
-            <TextInput style={styles.input} placeholder="Task Title" />
-
-            {/* Task description  entry in the bottom sheet*/}
+            <TextInput
+              style={styles.input}
+              placeholder="Task Title"
+              value={selectedTask.title}
+              onChangeText={(text) =>
+                setSelectedTask({ ...selectedTask, title: text })
+              }
+            />
             <TextInput
               style={styles.input}
               placeholder="Task Description"
               multiline
               numberOfLines={4}
+              value={selectedTask.description}
+              onChangeText={(text) =>
+                setSelectedTask({ ...selectedTask, description: text })
+              }
             />
-
-            {/* Submit button in the bottom sheet */}
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                padding: 8,
-              }}
-            >
+            <View style={styles.buttonRow}>
               <TouchableOpacity
                 onPress={handleUpdate}
                 style={styles.UpdateButton}
@@ -206,12 +201,13 @@ export default function DashboardHomeScreen({ navigation }) {
                   Update
                 </Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => bottomSheetRef.current.close()}
+                style={styles.UpdateButton}
+              >
+                <Text style={{ color: "#fff", fontWeight: "bold" }}>Close</Text>
+              </TouchableOpacity>
             </View>
-
-            {/* Close button */}
-            <TouchableOpacity onPress={() => bottomSheetRef.current.close()}>
-              <AntDesign name="close" size={24} color="black" />
-            </TouchableOpacity>
           </View>
         )}
       </RBSheet>
@@ -264,7 +260,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
   },
-
   UpdateButton: {
     borderWidth: 2,
     width: "40%",
@@ -273,10 +268,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "gray",
     borderColor: "gray",
+    marginHorizontal: 5,
   },
-
+  buttonRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 20,
+  },
   input: {
-    width: "80%",
+    width: "100%",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
