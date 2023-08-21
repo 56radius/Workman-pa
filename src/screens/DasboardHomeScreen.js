@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -11,7 +11,42 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
+//firebase authentication
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
+import app from "../backend/firebase.config";
+const dbRef = getFirestore(app);
+
 export default function DashboardHomeScreen({ navigation }) {
+  const [dataSnapshot, setDataSnapshot] = useState([]);
+
+  useEffect(() => {
+    async function getTasks() {
+      try {
+        const tasks = [];
+        const querySnapshot = await getDocs(collection(dbRef, "Tasks"));
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const result = {
+            id: doc.id,
+          };
+          tasks.push(result);
+        });
+        console.log("Document data:", tasks);
+        setDataSnapshot(tasks);
+      } catch (error) {
+        console.log("Error fetching documents:", error);
+      }
+    }
+
+    getTasks();
+  }, []);
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -26,36 +61,40 @@ export default function DashboardHomeScreen({ navigation }) {
           <Text style={{ color: "gray", fontWeight: "bold" }}> See Tasks </Text>
         </View>
 
-        {/* Details contents */}
-        <View style={styles.Details}>
-          {/* Task 1 */}
-          <View style={[styles.Button, styles.buttonMargin]}>
-            {/* Title and arrow icon */}
-            <View style={styles.DetailsText}>
-              <Text> Task 1 </Text>
+        {dataSnapshot.map((doc) => (
+          <View key={(doc.id, [doc.title])}>
+            {/* Details contents */}
+            <View style={styles.Details}>
+              {/* Task 1 */}
+              <View style={[styles.Button, styles.buttonMargin]}>
+                {/* Title and arrow icon */}
+                <View style={styles.DetailsText}>
+                  <Text> {doc.id} </Text>
 
-              {/* Ionns */}
-              <View style={{ flexDirection: "row" }}>
-                {/* Delete icon */}
-                <TouchableOpacity style={{ marginRight: 10 }}>
-                  <AntDesign name="delete" size={24} color="black" />
-                </TouchableOpacity>
+                  {/* Ionns */}
+                  <View style={{ flexDirection: "row" }}>
+                    {/* Delete icon */}
+                    <TouchableOpacity style={{ marginRight: 10 }}>
+                      <AntDesign name="delete" size={24} color="black" />
+                    </TouchableOpacity>
 
-                {/* Edit icon */}
-                <TouchableOpacity style={{ marginRight: 10 }}>
-                  <MaterialIcons name="edit" size={24} color="black" />
-                </TouchableOpacity>
+                    {/* Edit icon */}
+                    <TouchableOpacity style={{ marginRight: 10 }}>
+                      <MaterialIcons name="edit" size={24} color="black" />
+                    </TouchableOpacity>
 
-                {/* Right arrow icon */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("Description")}
-                >
-                  <AntDesign name="arrowright" size={20} color="black" />
-                </TouchableOpacity>
+                    {/* Right arrow icon */}
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("Description")}
+                    >
+                      <AntDesign name="arrowright" size={20} color="black" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
             </View>
           </View>
-        </View>
+        ))}
       </View>
     </ScrollView>
   );
