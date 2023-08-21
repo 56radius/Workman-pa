@@ -24,7 +24,7 @@ export default function TaskDescription({ navigation }) {
           const data = doc.data();
           const result = {
             id: doc.id,
-
+            title: data.title,
             description: data.description,
           };
           tasks.push(result);
@@ -38,21 +38,22 @@ export default function TaskDescription({ navigation }) {
 
     getTasks();
   }, []);
+
   return (
     <ScrollView>
       <View style={styles.container}>
-        {/* Header */}
-        <View style={styles.headerTitle}>
-          <Text style={{ color: "grey", fontSize: 30, paddingVertical: 18 }}>
-            <Text> Task Description </Text>
-          </Text>
-        </View>
-
         {/* Retrieving records */}
         {dataSnapshot.map((doc) => (
-          <View key={(doc.id, [doc.title])}>
-            <Text> {doc.id} </Text>
-            <Text> {doc.title} </Text>
+          <View style={{ alignSelf: "flex-start", margin: 20 }} key={doc.id}>
+            {/* Header */}
+            <View style={styles.headerTitle}>
+              <Text
+                style={{ color: "grey", fontSize: 30, paddingVertical: 18 }}
+              >
+                <Text style={{ marginRight: 60 }}> {doc.title} </Text>
+              </Text>
+            </View>
+            {/* Description*/}
             <Text> {doc.description} </Text>
           </View>
         ))}
