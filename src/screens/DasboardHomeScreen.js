@@ -40,16 +40,19 @@ export default function DashboardHomeScreen({ navigation }) {
   const [selectedTask, setSelectedTask] = useState(null);
   const bottomSheetRef = React.createRef();
 
+  //bottom sheets
   const openTaskDetails = (task) => {
     setSelectedTask(task);
     bottomSheetRef.current.open();
   };
 
+  //edit bottom sheets
   const openEditBottomSheet = (task) => {
     setSelectedTask(task);
     bottomSheetRef.current.open();
   };
 
+  //handleDelete function
   const handleDelete = async (docId) => {
     try {
       await deleteDoc(doc(collection(dbRef, "Tasks"), docId));
@@ -60,6 +63,9 @@ export default function DashboardHomeScreen({ navigation }) {
       Alert.alert("Failure", "Task could not be deleted");
     }
   };
+
+  //handleUpdate function
+  const handleUpdate = async (docId) => {};
 
   //useEfect for retrieval of tasks for the right arrow icon
   useEffect(() => {
@@ -161,7 +167,7 @@ export default function DashboardHomeScreen({ navigation }) {
         ))}
       </View>
 
-      {/* Buttom sheet for the edit icon */}
+      {/* Button sheet for the edit icon */}
       <RBSheet
         ref={bottomSheetRef}
         height={300}
@@ -174,30 +180,15 @@ export default function DashboardHomeScreen({ navigation }) {
           <View style={styles.bottomSheetContent}>
             <Text style={styles.bottomSheetTitle}>{selectedTask.title}</Text>
             {/* Task title entry in the bottom sheet */}
-            <View
-              style={{
-                marginBottom: 15,
-                borderColor: "gray",
-                borderWidth: 2,
-                borderRadius: 20,
-                padding: 10,
-              }}
-            >
-              <TextInput placeholder="Your Task Title" />
-            </View>
+            <TextInput style={styles.input} placeholder="Task Title" />
 
             {/* Task description  entry in the bottom sheet*/}
-            <View
-              style={{
-                marginBottom: 15,
-                borderColor: "gray",
-                borderWidth: 2,
-                borderRadius: 20,
-                padding: 10,
-              }}
-            >
-              <TextInput placeholder="Task Description" />
-            </View>
+            <TextInput
+              style={styles.input}
+              placeholder="Task Description"
+              multiline
+              numberOfLines={4}
+            />
 
             {/* Submit button in the bottom sheet */}
             <View
@@ -207,7 +198,10 @@ export default function DashboardHomeScreen({ navigation }) {
                 padding: 8,
               }}
             >
-              <TouchableOpacity style={styles.UpdateButton}>
+              <TouchableOpacity
+                onPress={handleUpdate}
+                style={styles.UpdateButton}
+              >
                 <Text style={{ color: "#fff", fontWeight: "bold" }}>
                   Update
                 </Text>
@@ -279,5 +273,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "gray",
     borderColor: "gray",
+  },
+
+  input: {
+    width: "80%",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 20,
   },
 });

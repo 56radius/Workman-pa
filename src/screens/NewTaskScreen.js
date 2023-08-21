@@ -42,18 +42,11 @@ export default function NewTaskScreen({ navigation }) {
       <Text style={styles.heading}>Create New Task</Text>
 
       {/* Task title */}
-      <TextInput
-        style={styles.input}
-        placeholder="Task Title"
-        value={title}
-        onChangeText={(text) => setTitle(text)}
-      />
+      <TextInput style={styles.input} placeholder="Task Title" />
 
       {/* Task description */}
       <TextInput
         style={styles.input}
-        value={description}
-        onChangeText={(text) => setDescription(text)}
         placeholder="Task Description"
         multiline
         numberOfLines={4}
