@@ -43,9 +43,9 @@ export default function App() {
 
             {/* Description */}
             <Stack.Screen
-              name="TaskDescription"
+              name="Description"
               component={TaskDescription}
-              options={{ title: "Dashboard", headerShown: false }}
+              options={{ title: "Description" }}
             />
           </>
         ) : (

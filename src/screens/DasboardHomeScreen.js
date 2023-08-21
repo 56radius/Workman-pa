@@ -7,8 +7,6 @@ import {
   ScrollView,
 } from "react-native";
 
-import TaskDescription from "./TaskDescription";
-
 //expo vector icons
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -50,7 +48,7 @@ export default function DashboardHomeScreen({ navigation }) {
 
                 {/* Right arrow icon */}
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("TaskDescription")}
+                  onPress={() => navigation.navigate("Description")}
                 >
                   <AntDesign name="arrowright" size={20} color="black" />
                 </TouchableOpacity>

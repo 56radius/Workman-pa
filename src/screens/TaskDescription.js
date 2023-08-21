@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 
 export default function TaskDescription({ navigation }) {
@@ -6,9 +6,8 @@ export default function TaskDescription({ navigation }) {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.headerTitle}>
-        <Text style={{ color: "green", fontSize: 30, paddingVertical: 18 }}>
-          <Text style={styles.normalText}>Avinx_</Text>
-          <Text style={styles.highlightedText}>Health</Text>
+        <Text style={{ color: "grey", fontSize: 30, paddingVertical: 18 }}>
+          <Text> WORKMAN-PA </Text>
         </Text>
       </View>
     </View>
