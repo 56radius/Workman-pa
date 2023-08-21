@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import {
   View,
   Text,
@@ -7,9 +8,16 @@ import {
   ScrollView,
   Alert,
   RefreshControl,
+  TextInput,
 } from "react-native";
+
+//expo vector icons
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+
+//bottom sheet
 import RBSheet from "react-native-raw-bottom-sheet";
+
+//firebase authentication
 import {
   getFirestore,
   collection,
@@ -23,9 +31,10 @@ const dbRef = getFirestore(app);
 export default function DashboardHomeScreen({ navigation }) {
   const [dataSnapshot, setDataSnapshot] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+
+  //bottom sheet
   const tasks = [
     { id: 1, title: "Task 1", description: "Description for Task 1" },
-    // Add more tasks here
   ];
 
   const [selectedTask, setSelectedTask] = useState(null);
@@ -52,6 +61,7 @@ export default function DashboardHomeScreen({ navigation }) {
     }
   };
 
+  //useEfect for retrieval of tasks for the right arrow icon
   useEffect(() => {
     async function getTasks() {
       try {
@@ -75,9 +85,11 @@ export default function DashboardHomeScreen({ navigation }) {
     getTasks();
   }, []);
 
+  //for the refresh control api that was imported
   const onRefresh = async () => {
     setRefreshing(true);
 
+    //try and catch to retrieve from the firestore database
     try {
       const tasks = [];
       const querySnapshot = await getDocs(collection(dbRef, "Tasks"));
@@ -148,6 +160,8 @@ export default function DashboardHomeScreen({ navigation }) {
           </View>
         ))}
       </View>
+
+      {/* Buttom sheet for the edit icon */}
       <RBSheet
         ref={bottomSheetRef}
         height={300}
@@ -159,9 +173,50 @@ export default function DashboardHomeScreen({ navigation }) {
         {selectedTask && (
           <View style={styles.bottomSheetContent}>
             <Text style={styles.bottomSheetTitle}>{selectedTask.title}</Text>
-            <Text>{selectedTask.description}</Text>
+            {/* Task title entry in the bottom sheet */}
+            <View
+              style={{
+                marginBottom: 15,
+                borderColor: "gray",
+                borderWidth: 2,
+                borderRadius: 20,
+                padding: 10,
+              }}
+            >
+              <TextInput placeholder="Your Task Title" />
+            </View>
+
+            {/* Task description  entry in the bottom sheet*/}
+            <View
+              style={{
+                marginBottom: 15,
+                borderColor: "gray",
+                borderWidth: 2,
+                borderRadius: 20,
+                padding: 10,
+              }}
+            >
+              <TextInput placeholder="Task Description" />
+            </View>
+
+            {/* Submit button in the bottom sheet */}
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 8,
+              }}
+            >
+              <TouchableOpacity style={styles.UpdateButton}>
+                <Text style={{ color: "#fff", fontWeight: "bold" }}>
+                  Update
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Close button */}
             <TouchableOpacity onPress={() => bottomSheetRef.current.close()}>
-              <Text style={styles.closeButton}>Close</Text>
+              <AntDesign name="close" size={24} color="black" />
             </TouchableOpacity>
           </View>
         )}
@@ -215,8 +270,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
   },
-  closeButton: {
-    color: "blue",
-    marginTop: 10,
+
+  UpdateButton: {
+    borderWidth: 2,
+    width: "40%",
+    alignItems: "center",
+    paddingVertical: 8,
+    borderRadius: 10,
+    backgroundColor: "gray",
+    borderColor: "gray",
   },
 });
