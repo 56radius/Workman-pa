@@ -9,7 +9,7 @@ import { getAuth } from "firebase/auth";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
-  authDomain: "workman-pa-64678.firebaseapp.com",
+  authDomain: "procees.env.EXPO_PUBLIC_DOMAIN",
   projectId: "workman-pa-64678",
   storageBucket: "workman-pa-64678.appspot.com",
   messagingSenderId: "385402010408",

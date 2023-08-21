@@ -12,6 +12,7 @@ import LoginScreen from "./src/screens/LoginScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
 import ForgotPasswordScreen from "./src/screens/ForgotPasswordScreen";
 import DashboardScreen from "./src/screens/DashboardScreen";
+import TaskDescription from "./src/screens/TaskDescription";
 
 //firebase auth
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -37,6 +38,13 @@ export default function App() {
             <Stack.Screen
               name="Dashboard"
               component={DashboardScreen}
+              options={{ title: "Dashboard", headerShown: false }}
+            />
+
+            {/* Description */}
+            <Stack.Screen
+              name="TaskDescription"
+              component={TaskDescription}
               options={{ title: "Dashboard", headerShown: false }}
             />
           </>
