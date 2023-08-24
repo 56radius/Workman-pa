@@ -9,8 +9,15 @@ import {
   RefreshControl,
   TextInput,
 } from "react-native";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+
+//expo vector icons
+import { AntDesign } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+
+//expo bottom sheets
 import RBSheet from "react-native-raw-bottom-sheet";
+
+//firebase and firestore authenticaion
 import {
   getFirestore,
   collection,
@@ -37,6 +44,7 @@ export default function DashboardHomeScreen({ navigation }) {
     // Add more tasks here
   ];
 
+  //bottom sheets
   const [selectedTask, setSelectedTask] = useState(null);
   const bottomSheetRef = React.createRef();
 
@@ -50,29 +58,27 @@ export default function DashboardHomeScreen({ navigation }) {
     bottomSheetRef.current.open();
   };
 
-  //handleDelete
+  //handleDelete function
   const handleDelete = async (docId) => {
     try {
       await deleteDoc(doc(collection(dbRef, "Tasks"), docId));
       setDataSnapshot((prevData) => prevData.filter((doc) => doc.id !== docId));
       Alert.alert("Success", "Task successfully deleted");
     } catch (error) {
-      console.log("Error deleting document:", error);
       Alert.alert("Failure", "Task could not be deleted");
     }
   };
 
-  //handleUpdate
+  //handleUpdate function
   const handleUpdate = async () => {
-    console.log("updating task", "with new data");
     console.log("selectedTask ", selectedTask);
     const data = {
       ...selectedTask,
-      title: title,
-      description: description,
+
       owner: currentUserId,
       completed: false,
     };
+    console.log("updating task", data);
     try {
       // Perform the necessary update actions here
       await updateDoc(doc(dbRef, "Tasks", selectedTask.id), data);
@@ -108,7 +114,7 @@ export default function DashboardHomeScreen({ navigation }) {
     getTasks();
   }, []);
 
-  const onRefresh = async () => {
+  //refresh control for the task screen
     setRefreshing(true);
 
     try {
@@ -150,6 +156,7 @@ export default function DashboardHomeScreen({ navigation }) {
                 <View style={styles.DetailsText}>
                   <Text style={{ marginRight: 60 }}> {doc.title} </Text>
                   <View style={{ flexDirection: "row" }}>
+                    {/* delete */}
                     <TouchableOpacity
                       style={{ marginRight: 10 }}
                       onPress={() => handleDelete(doc.id)}
@@ -170,6 +177,7 @@ export default function DashboardHomeScreen({ navigation }) {
                     </TouchableOpacity>
                     {/* ))} */}
 
+                    {/* Arrow right icon */}
                     <TouchableOpacity
                       style={{}}
                       onPress={() =>
@@ -203,7 +211,7 @@ export default function DashboardHomeScreen({ navigation }) {
               placeholder="Task Title"
               value={selectedTask.title}
               onChangeText={(text) =>
-                setSelectedTask({ ...selectedTask, title: text })
+                setSelectedTask((prev) => ({ ...prev, title: text }))
               }
             />
 
