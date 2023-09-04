@@ -3,9 +3,9 @@ import { Button, Image, View, Text, Platform, StyleSheet } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 export default function SettingsScreen({ navigation }) {
-  //const [image, setImage] = useState(null);
+  const [image, setImage] = useState(null);
 
-  /*  const pickImage = async () => {
+  const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -19,16 +19,15 @@ export default function SettingsScreen({ navigation }) {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
-  }; */
+  };
 
   return (
     <View style={styles.container}>
-      {/* 
-      <Button title="Pick an image from camera roll" onPress={pickImage} />
-     
-        {image && (
+      <Button title="Upload" onPress={pickImage} />
+
+      {image && (
         <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-      )} */}
+      )}
       <Text> Hello </Text>
     </View>
   );
