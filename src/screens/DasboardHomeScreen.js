@@ -31,20 +31,17 @@ import { getAuth } from "firebase/auth";
 const dbRef = getFirestore(app);
 
 export default function DashboardHomeScreen({ navigation }) {
-  //title and description consts
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dataSnapshot, setDataSnapshot] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const currentUserId = getAuth().currentUser?.uid;
 
-  //tasks const id
   const tasks = [
     { id: 1, title: "Task 1", description: "Description for Task 1" },
     // Add more tasks here
   ];
 
-  //bottom sheets
   const [selectedTask, setSelectedTask] = useState(null);
   const bottomSheetRef = React.createRef();
 
@@ -58,7 +55,6 @@ export default function DashboardHomeScreen({ navigation }) {
     bottomSheetRef.current.open();
   };
 
-  //handleDelete function
   const handleDelete = async (docId) => {
     try {
       await deleteDoc(doc(collection(dbRef, "Tasks"), docId));
@@ -69,20 +65,17 @@ export default function DashboardHomeScreen({ navigation }) {
     }
   };
 
-  //handleUpdate function
   const handleUpdate = async () => {
-    console.log("selectedTask ", selectedTask);
     const data = {
       ...selectedTask,
-
       owner: currentUserId,
       completed: false,
     };
-    console.log("updating task", data);
     try {
-      // Perform the necessary update actions here
       await updateDoc(doc(dbRef, "Tasks", selectedTask.id), data);
-
+      setDataSnapshot((prevData) =>
+        prevData.map((doc) => (doc.id === selectedTask.id ? data : doc))
+      );
       Alert.alert("Success", "Task successfully updated");
       bottomSheetRef.current.close();
     } catch (error) {
@@ -101,10 +94,10 @@ export default function DashboardHomeScreen({ navigation }) {
           const result = {
             id: doc.id,
             title: data.title,
+            description: data.description,
           };
           tasks.push(result);
         });
-        console.log("Document data:", tasks);
         setDataSnapshot(tasks);
       } catch (error) {
         console.log("Error fetching documents:", error);
@@ -114,7 +107,7 @@ export default function DashboardHomeScreen({ navigation }) {
     getTasks();
   }, []);
 
-  //refresh control for the task screen
+  const onRefresh = async () => {
     setRefreshing(true);
 
     try {
@@ -125,10 +118,10 @@ export default function DashboardHomeScreen({ navigation }) {
         const result = {
           id: doc.id,
           title: data.title,
+          description: data.description,
         };
         tasks.push(result);
       });
-      console.log("Document data:", tasks);
       setDataSnapshot(tasks);
     } catch (error) {
       console.log("Error fetching documents:", error);
@@ -139,7 +132,6 @@ export default function DashboardHomeScreen({ navigation }) {
 
   return (
     <ScrollView
-      //refreshe control
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
@@ -156,7 +148,6 @@ export default function DashboardHomeScreen({ navigation }) {
                 <View style={styles.DetailsText}>
                   <Text style={{ marginRight: 60 }}> {doc.title} </Text>
                   <View style={{ flexDirection: "row" }}>
-                    {/* delete */}
                     <TouchableOpacity
                       style={{ marginRight: 10 }}
                       onPress={() => handleDelete(doc.id)}
@@ -164,22 +155,14 @@ export default function DashboardHomeScreen({ navigation }) {
                       <AntDesign name="delete" size={24} color="black" />
                     </TouchableOpacity>
 
-                    {/* {tasks.map((task) => ( */}
                     <TouchableOpacity
-                      key={doc.id}
-                      onPress={() => {
-                        setSelectedTask(doc);
-                        openEditBottomSheet(doc);
-                      }}
+                      onPress={() => openEditBottomSheet(doc)}
                       style={{ marginRight: 10 }}
                     >
                       <MaterialIcons name="edit" size={24} color="black" />
                     </TouchableOpacity>
-                    {/* ))} */}
 
-                    {/* Arrow right icon */}
                     <TouchableOpacity
-                      style={{}}
                       onPress={() =>
                         navigation.navigate("Description", { taskId: doc.id })
                       }
@@ -205,7 +188,6 @@ export default function DashboardHomeScreen({ navigation }) {
         {selectedTask && (
           <View style={styles.bottomSheetContent}>
             <Text style={styles.bottomSheetTitle}>{selectedTask.title}</Text>
-            {/* Title input for editing to update */}
             <TextInput
               style={styles.input}
               placeholder="Task Title"
@@ -214,8 +196,6 @@ export default function DashboardHomeScreen({ navigation }) {
                 setSelectedTask((prev) => ({ ...prev, title: text }))
               }
             />
-
-            {/* Task description for update */}
             <TextInput
               style={styles.input}
               placeholder="Task Description"
@@ -223,7 +203,7 @@ export default function DashboardHomeScreen({ navigation }) {
               numberOfLines={4}
               value={selectedTask.description}
               onChangeText={(text) =>
-                setSelectedTask({ ...selectedTask, description: text })
+                setSelectedTask((prev) => ({ ...prev, description: text }))
               }
             />
             <View style={styles.buttonRow}>
