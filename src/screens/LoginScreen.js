@@ -40,14 +40,16 @@ export default function LoginScreen({ navigation }) {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text> Workman-pa </Text>
+        <View style={{ justifyContent: "center", alignItems: "flex-start" }}>
+          <Text style={{ fontWeight: "bold", fontSize: 40 }}> Login </Text>
+        </View>
       </View>
 
       {/* Form */}
       <View
         style={{
           padding: 20,
-          width: "70%",
+          width: "95%",
           justifyContent: "center",
         }}
       >
@@ -57,8 +59,9 @@ export default function LoginScreen({ navigation }) {
             marginBottom: 15,
             borderColor: "gray",
             borderWidth: 2,
-            borderRadius: 20,
+            borderRadius: 12,
             padding: 10,
+            paddingVertical: 17,
           }}
         >
           <TextInput
@@ -73,7 +76,8 @@ export default function LoginScreen({ navigation }) {
             marginBottom: 15,
             borderColor: "gray",
             borderWidth: 2,
-            borderRadius: 20,
+            borderRadius: 12,
+            paddingVertical: 17,
             padding: 10,
           }}
         >

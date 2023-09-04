@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -21,6 +21,14 @@ import {
 } from "@expo/vector-icons";
 
 export default function MyProfileScreen({ navigation }) {
+  const [profileImage, setProfileImage] = useState(
+    require("../.././assets/water.png")
+  );
+
+  const updateProfileImage = (newImageUri) => {
+    setProfileImage({ uri: newImageUri });
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -32,7 +40,7 @@ export default function MyProfileScreen({ navigation }) {
               height: 78,
               borderRadius: 50,
             }}
-            source={require("../.././assets/water.png")}
+            source={profileImage}
           />
           <Text
             style={{
@@ -45,9 +53,9 @@ export default function MyProfileScreen({ navigation }) {
           </Text>
         </View>
 
-        {/* user's info */}
+        {/* User's Info */}
         <View style={{ flex: 5 }}>
-          {/* Full Name*/}
+          {/* Full Name */}
           <TouchableOpacity style={styles.profileItem}>
             <View style={styles.profileItemLeft}>
               <EvilIcons name="user" size={24} color="black" />
@@ -96,7 +104,7 @@ export default function MyProfileScreen({ navigation }) {
             <View style={styles.profileItemLeft}>
               <Feather name="phone" size={24} color="black" />
               <Text style={styles.profileTitle}>
-                phone{"\n"}
+                Phone {"\n"}
                 <Text style={{ color: "gray", fontSize: 12 }}>
                   +2348101295652
                 </Text>

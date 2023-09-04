@@ -34,6 +34,7 @@ export default function DashboardHomeScreen({ navigation }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dataSnapshot, setDataSnapshot] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const currentUserId = getAuth().currentUser?.uid;
 
@@ -71,16 +72,18 @@ export default function DashboardHomeScreen({ navigation }) {
       owner: currentUserId,
       completed: false,
     };
+    setLoading(true);
     try {
       await updateDoc(doc(dbRef, "Tasks", selectedTask.id), data);
       setDataSnapshot((prevData) =>
         prevData.map((doc) => (doc.id === selectedTask.id ? data : doc))
       );
       Alert.alert("Success", "Task successfully updated");
-      bottomSheetRef.current.close();
+      setLoading(false);
     } catch (error) {
       console.log("Error updating document:", error);
       Alert.alert("Failure", "Task could not be updated");
+      setLoading(false);
     }
   };
 
@@ -212,7 +215,7 @@ export default function DashboardHomeScreen({ navigation }) {
                 style={styles.UpdateButton}
               >
                 <Text style={{ color: "#fff", fontWeight: "bold" }}>
-                  Update
+                  {loading ? "Please Wait..." : "Update"}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity

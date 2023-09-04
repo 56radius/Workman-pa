@@ -7,16 +7,17 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from "react-native";
-
-//expo-image picker
 import * as ImagePicker from "expo-image-picker";
+import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { getAuth } from "firebase/auth"; // Import Firebase Auth if not already imported
 
 export default function EditProfileScreen({ navigation }) {
   const [image, setImage] = useState(null);
+  const currentUserId = getAuth().currentUser?.uid;
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -24,12 +25,30 @@ export default function EditProfileScreen({ navigation }) {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setImage(result.uri);
+      uploadImage(result.uri);
     }
   };
+
+  const uploadImage = async (uri) => {
+    const storage = getStorage();
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    // Create a reference to the user's profile image in Firebase Storage
+    const imageRef = ref(storage, `users/${currentUserId}/profile-image`);
+
+    try {
+      // Upload the image blob to Firebase Storage
+      await uploadBytesResumable(imageRef, blob); // Use uploadBytesResumable
+      Alert.alert("Success", "Image Successfully");
+      console.log("Image uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -59,7 +78,7 @@ export default function EditProfileScreen({ navigation }) {
                 alignItems: "center",
               }}
             >
-              <Text style={{ fontSize: 12 }}> Change Profile Picture </Text>
+              <Text style={{ fontSize: 12 }}>Change Profile Picture</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -69,7 +88,7 @@ export default function EditProfileScreen({ navigation }) {
           {/* Full Name */}
           <View>
             <View style={{ paddingVertical: 7 }}>
-              <Text> Full Name </Text>
+              <Text>Full Name</Text>
             </View>
             <View style={styles.inputContainer}>
               <TextInput placeholder="Full Name" style={styles.input} />
@@ -79,7 +98,7 @@ export default function EditProfileScreen({ navigation }) {
           {/* Email */}
           <View>
             <View style={{ paddingVertical: 7 }}>
-              <Text> Email </Text>
+              <Text>Email</Text>
             </View>
             <View
               style={{
@@ -96,7 +115,7 @@ export default function EditProfileScreen({ navigation }) {
           {/* Gender */}
           <View>
             <View style={{ paddingVertical: 7 }}>
-              <Text> Gender </Text>
+              <Text>Gender</Text>
             </View>
             <View style={styles.inputContainer}>
               <TextInput placeholder="Gender" style={styles.input} />
@@ -106,7 +125,7 @@ export default function EditProfileScreen({ navigation }) {
           {/* Phone */}
           <View>
             <View style={{ paddingVertical: 7 }}>
-              <Text> Phone </Text>
+              <Text>Phone</Text>
             </View>
             <View style={styles.inputContainer}>
               <TextInput placeholder="Phone number" style={styles.input} />
@@ -125,7 +144,7 @@ export default function EditProfileScreen({ navigation }) {
               borderColor: "gray",
             }}
           >
-            <Text> Update </Text>
+            <Text>Update</Text>
           </TouchableOpacity>
         </View>
       </View>
