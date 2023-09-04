@@ -137,12 +137,12 @@ export default function LoginScreen({ navigation }) {
           <TouchableOpacity
             onPress={() => navigation.navigate("SignUp")}
             style={{
-              borderWidth: 3,
+              borderWidth: 1,
               width: "60%",
               alignItems: "center",
               paddingVertical: 8,
               borderRadius: 10,
-              borderColor: "#fff",
+              borderColor: "black",
             }}
           >
             <Text style={{ color: "gray", fontWeight: "bold" }}> SIGN UP </Text>
