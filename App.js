@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 //stack navigation imports
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -13,6 +13,16 @@ import SignUpScreen from "./src/screens/SignUpScreen";
 import ForgotPasswordScreen from "./src/screens/ForgotPasswordScreen";
 import DashboardScreen from "./src/screens/DashboardScreen";
 import TaskDescription from "./src/screens/TaskDescription";
+import MyProfileScreen from "./src/screens/MyProfileScreen";
+import EditProfileScreen from "./src/screens/EditProfileScreen";
+
+//Expo Vector Icons
+import {
+  Ionicons,
+  AntDesign,
+  MaterialIcons,
+  Feather,
+} from "@expo/vector-icons";
 
 //firebase auth
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -46,6 +56,33 @@ export default function App() {
               name="Description"
               component={TaskDescription}
               options={{ title: "Description" }}
+            />
+
+            {/* My Profile Screen */}
+            <Stack.Screen
+              name="MyProfile"
+              component={MyProfileScreen}
+              options={({ navigation }) => ({
+                title: "My Profile",
+                headerTransparent: true,
+                headerRight: () => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("EditProfileScreen");
+                    }}
+                    style={{ marginRight: 10 }}
+                  >
+                    <Feather name="edit" size={24} color="black" />
+                  </TouchableOpacity>
+                ),
+              })}
+            />
+
+            {/* Edit Profile Screen*/}
+            <Stack.Screen
+              name="EditProfileScreen"
+              component={EditProfileScreen}
+              options={{ title: "Edit Profile", headerTransparent: true }}
             />
           </>
         ) : (
