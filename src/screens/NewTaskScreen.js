@@ -40,6 +40,11 @@ export default function NewTaskScreen({ navigation }) {
       const newTask = { id: result.id, ...data };
       updateDataSnapshot(newTask); // Call the function to update dataSnapshot
       Alert.alert("Success", "Task Created successfully");
+
+      // Clear the input fields
+      setTitle(""); // Set title to an empty string
+      setDescription(""); // Set description to an empty string
+
       setLoading(false);
     } catch (error) {
       setError(error);
