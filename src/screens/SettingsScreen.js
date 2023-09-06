@@ -1,40 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   Image,
-  Animated,
+  Switch,
 } from "react-native";
-
-//Expo Vector Icons
 import {
   Ionicons,
   AntDesign,
   MaterialIcons,
-  Entypo,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-
-//firebase auth for sign out
 import { getAuth, signOut } from "firebase/auth";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 export default function App({ navigation }) {
+  const refRBSheet = React.createRef();
+  const [darkModeEnabled, setDarkModeEnabled] = useState(false);
+
+  // Define styles for light mode
+  const lightModeStyles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#ffffff", // Light mode background color
+    },
+    // Add other light mode styles here
+  });
+
+  // Define styles for dark mode
+  const darkModeStyles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#000000", // Dark mode background color
+    },
+    // Add other dark mode styles here
+  });
+
   const handleSignOut = () => {
     // Sign out of Firebase Auth
     const auth = getAuth();
-
     signOut(auth).then(() => navigation.navigate("Login"));
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={
+        darkModeEnabled ? darkModeStyles.container : lightModeStyles.container
+      }
+    >
       {/* profile picture and name */}
       <View style={{ justifyContent: "center", alignItems: "center" }}>
         <Image
           style={{ width: 80, height: 80, borderRadius: 50 }}
-          source={require("../.././assets/water.png")}
+          source={require("../../assets/water.png")}
         />
 
         <Text
@@ -42,6 +66,7 @@ export default function App({ navigation }) {
             fontWeight: "bold",
             paddingVertical: 10,
             textAlign: "center",
+            color: darkModeEnabled ? "#ffffff" : "#000000", // Text color based on dark mode
           }}
         >
           Danny kayode
@@ -57,21 +82,44 @@ export default function App({ navigation }) {
           style={styles.profileItem}
         >
           <View style={styles.profileItemLeft}>
-            <AntDesign name="edit" size={24} color="black" />
-            <Text style={styles.profileTitle}> Profile </Text>
+            <AntDesign
+              name="edit"
+              size={24}
+              color={darkModeEnabled ? "#ffffff" : "#000000"}
+            />
+            <Text
+              style={[
+                styles.profileTitle,
+                { color: darkModeEnabled ? "#ffffff" : "#000000" },
+              ]}
+            >
+              {" "}
+              Profile{" "}
+            </Text>
           </View>
           <Text style={styles.profileArrow}>→</Text>
         </TouchableOpacity>
 
         {/* Appearance */}
-        <TouchableOpacity style={styles.profileItem}>
+        <TouchableOpacity
+          style={styles.profileItem}
+          onPress={() => refRBSheet.current.open()}
+        >
           <View style={styles.profileItemLeft}>
             <MaterialCommunityIcons
               name="toggle-switch-off-outline"
               size={24}
-              color="black"
+              color={darkModeEnabled ? "#ffffff" : "#000000"}
             />
-            <Text style={styles.profileTitle}> Appearance </Text>
+            <Text
+              style={[
+                styles.profileTitle,
+                { color: darkModeEnabled ? "#ffffff" : "#000000" },
+              ]}
+            >
+              {" "}
+              Appearance{" "}
+            </Text>
           </View>
           <Text style={styles.profileArrow}>→</Text>
         </TouchableOpacity>
@@ -79,8 +127,20 @@ export default function App({ navigation }) {
         {/* Help and support */}
         <TouchableOpacity style={styles.profileItem}>
           <View style={styles.profileItemLeft}>
-            <Ionicons name="ios-help-circle" size={24} color="black" />
-            <Text style={styles.profileTitle}> Support </Text>
+            <Ionicons
+              name="ios-help-circle"
+              size={24}
+              color={darkModeEnabled ? "#ffffff" : "#000000"}
+            />
+            <Text
+              style={[
+                styles.profileTitle,
+                { color: darkModeEnabled ? "#ffffff" : "#000000" },
+              ]}
+            >
+              {" "}
+              Support{" "}
+            </Text>
           </View>
           <Text style={styles.profileArrow}>→</Text>
         </TouchableOpacity>
@@ -88,8 +148,20 @@ export default function App({ navigation }) {
         {/* Feedback */}
         <TouchableOpacity style={styles.profileItem}>
           <View style={styles.profileItemLeft}>
-            <MaterialIcons name="feedback" size={24} color="black" />
-            <Text style={styles.profileTitle}> Feedback </Text>
+            <MaterialIcons
+              name="feedback"
+              size={24}
+              color={darkModeEnabled ? "#ffffff" : "#000000"}
+            />
+            <Text
+              style={[
+                styles.profileTitle,
+                { color: darkModeEnabled ? "#ffffff" : "#000000" },
+              ]}
+            >
+              {" "}
+              Feedback{" "}
+            </Text>
           </View>
           <Text style={styles.profileArrow}>→</Text>
         </TouchableOpacity>
@@ -97,8 +169,20 @@ export default function App({ navigation }) {
         {/* Data Privacy */}
         <TouchableOpacity style={styles.profileItem}>
           <View style={styles.profileItemLeft}>
-            <MaterialIcons name="privacy-tip" size={24} color="black" />
-            <Text style={styles.profileTitle}> Privacy </Text>
+            <MaterialIcons
+              name="privacy-tip"
+              size={24}
+              color={darkModeEnabled ? "#ffffff" : "#000000"}
+            />
+            <Text
+              style={[
+                styles.profileTitle,
+                { color: darkModeEnabled ? "#ffffff" : "#000000" },
+              ]}
+            >
+              {" "}
+              Privacy{" "}
+            </Text>
           </View>
           <Text style={styles.profileArrow}>→</Text>
         </TouchableOpacity>
@@ -118,22 +202,67 @@ export default function App({ navigation }) {
             alignItems: "center",
             paddingVertical: 8,
             borderRadius: 10,
-            backgroundColor: "gray",
-            borderColor: "gray",
+            backgroundColor: darkModeEnabled ? "#333333" : "gray",
+            borderColor: darkModeEnabled ? "#333333" : "gray",
           }}
         >
-          <Text style={{ color: "#fff", fontWeight: "bold" }}> Log Out </Text>
+          <Text style={{ color: "#ffffff", fontWeight: "bold" }}>
+            {" "}
+            Log Out{" "}
+          </Text>
         </TouchableOpacity>
       </View>
+
+      {/* Raw Bottom Sheet */}
+      <RBSheet
+        ref={refRBSheet}
+        closeOnDragDown={true}
+        height={200}
+        animationType="slide"
+        customStyles={{
+          wrapper: {
+            backgroundColor: "rgba(0,0,0,0.5)",
+          },
+          container: {
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            backgroundColor: darkModeEnabled ? "#333333" : "#ffffff", // Background color based on dark mode
+          },
+        }}
+      >
+        <View style={{ padding: 20 }}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "bold",
+              marginBottom: 20,
+              color: darkModeEnabled ? "#ffffff" : "#000000",
+            }}
+          >
+            Dark Mode
+          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text>Dark Mode</Text>
+            <Switch
+              value={darkModeEnabled}
+              onValueChange={(newValue) => setDarkModeEnabled(newValue)}
+              style={{ marginLeft: "auto" }}
+            />
+          </View>
+          <TouchableOpacity onPress={() => refRBSheet.current.close()}>
+            <Text style={{ color: "blue" }}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </RBSheet>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 40,
   },
 
   profileItem: {
