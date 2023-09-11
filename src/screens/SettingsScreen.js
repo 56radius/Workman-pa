@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Switch,
+  Alert,
 } from "react-native";
 import {
   Ionicons,
@@ -46,6 +47,7 @@ export default function App({ navigation }) {
     // Sign out of Firebase Auth
     const auth = getAuth();
     signOut(auth).then(() => navigation.navigate("Login"));
+    Alert.alert("Logged Out", "You have been logged out");
   };
 
   return (

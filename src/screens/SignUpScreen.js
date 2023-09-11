@@ -40,26 +40,10 @@ export default function SignUpScreen({ navigation }) {
       <View
         style={{
           padding: 20,
-          width: "70%",
+          width: "90%",
           justifyContent: "center",
         }}
       >
-        {/* Email */}
-        <View
-          style={{
-            marginBottom: 15,
-            borderColor: "gray",
-            borderWidth: 2,
-            borderRadius: 20,
-            padding: 10,
-          }}
-        >
-          <TextInput
-            onChangeText={(text) => setEmail(text)}
-            placeholder="Email"
-          />
-        </View>
-
         {/* Name */}
         <View
           style={{
@@ -68,12 +52,44 @@ export default function SignUpScreen({ navigation }) {
             borderWidth: 2,
             borderRadius: 20,
             padding: 10,
+            paddingVertical: 15,
           }}
         >
-          <TextInput placeholder="First Name" />
+          <TextInput placeholder="Full Name" />
         </View>
 
-        {/* Age */}
+        {/* Email */}
+        <View
+          style={{
+            marginBottom: 15,
+            borderColor: "gray",
+            borderWidth: 2,
+            borderRadius: 20,
+            padding: 10,
+            paddingVertical: 15,
+          }}
+        >
+          <TextInput
+            onChangeText={(text) => setEmail(text)}
+            placeholder="Email"
+          />
+        </View>
+
+        {/* Gender */}
+        <View
+          style={{
+            marginBottom: 15,
+            borderColor: "gray",
+            borderWidth: 2,
+            borderRadius: 20,
+            padding: 10,
+            paddingVertical: 15,
+          }}
+        >
+          <TextInput placeholder="Gender" />
+        </View>
+
+        {/* Phone Number */}
         <View
           style={{
             marginBottom: 15,
@@ -83,7 +99,7 @@ export default function SignUpScreen({ navigation }) {
             padding: 10,
           }}
         >
-          <TextInput placeholder="Age" />
+          <TextInput placeholder="Phone no" />
         </View>
 
         {/* password */}
@@ -94,6 +110,7 @@ export default function SignUpScreen({ navigation }) {
             borderWidth: 2,
             borderRadius: 20,
             padding: 10,
+            paddingVertical: 15,
           }}
         >
           <TextInput
@@ -101,19 +118,6 @@ export default function SignUpScreen({ navigation }) {
             secureTextEntry
             placeholder="password"
           />
-        </View>
-
-        {/* confirm password */}
-        <View
-          style={{
-            marginBottom: 15,
-            borderColor: "gray",
-            borderWidth: 2,
-            borderRadius: 20,
-            padding: 10,
-          }}
-        >
-          <TextInput secureTextEntry placeholder="Confirm password" />
         </View>
 
         {/* Submit */}

@@ -10,13 +10,12 @@ import { getAuth } from "firebase/auth";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
-  authDomain: "procees.env.EXPO_PUBLIC_DOMAIN",
-  projectId: "workman-pa-64678",
-  storageBucket: "workman-pa-64678.appspot.com",
-  messagingSenderId: "385402010408",
-  appId: "1:385402010408:web:3b78ad51a5c42d1d99ee1d",
-  measurementId: "G-XVR41V4C8Y",
-  storageBucket: "workman-pa-64678.appspot.com",
+  authDomain: procees.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: proceess.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSENGER_SENDER_ID,
+  appId: proceess.env.EXPO_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
